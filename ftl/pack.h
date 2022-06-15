@@ -1,5 +1,7 @@
 // Asset pack formats. Currently only the ftl.dat format, but maybe zip files and folders and stuff later.
 
+#pragma once
+
 #include "ftl.h"
 
 // Key-value pair for stb_ds
@@ -34,3 +36,6 @@ typedef struct dat_file {
 
 // Create a new ftl.dat index with size entries. Truncates the file at path if it exists.
 extern dat_file_t *dat_create_index(const char *path, uint32_t size);
+
+// Read an ftl.dat index
+extern dat_file_t *dat_read_index(const char *path);

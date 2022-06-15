@@ -1,5 +1,7 @@
 // Header that includes standard library headers and random definitions
 
+#pragma once
+
 #include <assert.h>
 #include <errno.h>
 #include <inttypes.h>

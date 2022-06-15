@@ -7,9 +7,11 @@ project "ftl"
 
 		"ftl.h",
 		"pack.h",
+		"util.h",
 
 		"main.c",
 		"pack.c",
+		"util.c",
 	}
 
 	sharedlibs({
