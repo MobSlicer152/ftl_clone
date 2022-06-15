@@ -1,0 +1,8 @@
+.vs/
+
+proj/
+bin/
+bin-int/
+
+*.aps
+
