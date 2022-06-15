@@ -48,6 +48,9 @@ typedef uint8_t byte_t;
 #define FTL_STRINGIZE(x) #x
 #define FTL_STRINGIZE_EXPAND(x) FTL_STRINGIZE(x)
 
+// Percentage
+#define FTL_PERCENT(n, total) (((n) / (double)(total)) * 100)
+
 // Assertion
 #define FTL_ASSERT(cond)                                                                                           \
 	if (!(cond)) {                                                                                             \

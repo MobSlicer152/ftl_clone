@@ -1,41 +1,19 @@
-// Asset pack formats. Currently only the ftl.dat format, but maybe zip files and folders and stuff later.
+// Asset pack formats. Currently only the ftl.dat format introduced in 1.6.1.
 
 #pragma once
 
 #include "ftl.h"
 
-// Key-value pair for stb_ds
-typedef struct dat_path {
-	char *key; // Path
-	uint32_t value; // Location in the index
-} dat_path_t;
+// FTL currently uses the System Interface Library PKG format for ftl.dat, and I'm too lazy to get that working with my
+// build system, so I'm just going to reimplement specifically the stuff I need. It also seems that the format uses big
+// endian, just to make my life harder.
 
-// ftl.dat index (table of offsets to the file entries)
-typedef struct dat_index {
-	uint32_t index_size; // Number of offsets
-	uint32_t *index; // Offsets of file entries
-} dat_index_t;
+// The magic bytes for the format. The last byte seems to be a version number, because it's 10 in ftl.dat, but 12 in
+// current versions of the library.
+#define PKG_MAGIC 'PKG\10'
 
-// ftl.dat file entry
-typedef struct dat_entry {
-	uint32_t offset; // Offset. Part of the index, not the entry
-	uint32_t data_size; // Size of data
-	uint32_t path_len; // Length of path
-	char *path; // Path within the file
-	uint32_t data_offset; // Offset to the data
-} dat_entry_t;
+typedef struct pkg_header {
+	char magic[4]; // Must be PKG_MAGIC
+	uint16_t header_size; // Size of the header
 
-// A struct to hold ftl.dat file information
-typedef struct dat_file {
-	char *name; // Name of the file
-	FILE *fp; // File pointer
-	dat_index_t index; // Index of the file
-	dat_entry_t *entries; // Pointers to entries
-	dat_path_t *path_indices; // Indices of paths in the index
-} dat_file_t;
-
-// Create a new ftl.dat index with size entries. Truncates the file at path if it exists.
-extern dat_file_t *dat_create_index(const char *path, uint32_t size);
-
-// Read an ftl.dat index
-extern dat_file_t *dat_read_index(const char *path);
+} pkg_header_t;

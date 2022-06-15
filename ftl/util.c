@@ -1,6 +1,8 @@
 // Implementations of util.h
 
+// All the stb headers are included in ftl.h, which util.h includes
 #define STB_DS_IMPLEMENTATION
+
 #include "util.h"
 
 size_t flen(FILE *stream)
