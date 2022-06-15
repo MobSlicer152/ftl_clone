@@ -11,3 +11,7 @@ project "ftl"
 		"main.c",
 		"pack.c",
 	}
+
+	sharedlibs({
+		"SDL2"
+	})

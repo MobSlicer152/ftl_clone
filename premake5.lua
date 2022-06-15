@@ -12,7 +12,13 @@ workspace "ftl"
 	files { "premake5.lua" }
 
 	includedirs {
+		"deps/include",
+		"deps/stb",
 		"ftl"
+	}
+
+	libdirs {
+		"deps/lib/%{cfg.platform}"
 	}
 
 	filter "configurations:Debug"
@@ -38,5 +44,20 @@ workspace "ftl"
 		}
 	filter ""
 
+function sharedlibs(_libs)
+	links(_libs)
+	if _TARGET_OS == "windows" then
+		_libpat = "<LIBNAME>.dll"
+	else
+		_libpat = "lib<LIBNAME>.*"
+	end
+	_postbuildcmds = {}
+	table.foreachi(_libs, function(_lib)
+		_libname = string.gsub(_libpat, "<LIBNAME>", _lib)
+		_cmd = "{COPYFILE} " .. _MAIN_SCRIPT_DIR .. "/deps/lib/%{cfg.platform}/" .. _libname .. " %{cfg.linktarget.directory}/" .. _libname
+		_postbuildcmds = table.merge(_postbuildcmds, { _cmd })
+	end)
+	postbuildcommands(_postbuildcmds)
+end
 
 include "ftl"
