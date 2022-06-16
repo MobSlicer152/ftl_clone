@@ -15,5 +15,6 @@ project "ftl"
 	}
 
 	sharedlibs({
-		"SDL2"
+		"SDL2",
+		"zlib-ng2",
 	})

@@ -44,20 +44,23 @@ typedef uint8_t byte_t;
 		;
 #endif
 
-// Make an arbitrary thing a string literal
+// Make an arbitrary sequence of text a string literal
 #define FTL_STRINGIZE(x) #x
+
+// Make a macro's expansion a string literal
 #define FTL_STRINGIZE_EXPAND(x) FTL_STRINGIZE(x)
 
 // Percentage
 #define FTL_PERCENT(n, total) (((n) / (double)(total)) * 100)
 
 // Assertion
-#define FTL_ASSERT(cond)                                                                                           \
-	if (!(cond)) {                                                                                             \
-		fprintf(stderr, "Assertion \"" #cond "\" at %s:%d:%s failed\n", __FILE__, __LINE__, FTL_FUNCNAME); \
-		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Assertion failed",                                 \
-					 "Assertion \"" #cond "\" failed at " __FILE__                             \
-					 ":" FTL_STRINGIZE_EXPAND(__LINE__),                                       \
-					 NULL);                                                                    \
-		FTL_DEBUGBREAK();                                                                                  \
+#define FTL_ASSERT(cond)                                                                                    \
+	if (!(cond)) {                                                                                      \
+		fprintf(stderr, "Assertion FTL_ASSERT(" #cond ") at %s:%d:%s failed\n", __FILE__, __LINE__, \
+			FTL_FUNCNAME);                                                                      \
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "Assertion failed",                          \
+					 "Assertion \"" #cond "\" failed at " __FILE__                      \
+					 ":" FTL_STRINGIZE_EXPAND(__LINE__),                                \
+					 NULL);                                                             \
+		FTL_DEBUGBREAK();                                                                           \
 	}

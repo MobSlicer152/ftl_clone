@@ -48,15 +48,20 @@ function sharedlibs(_libs)
 	links(_libs)
 	if _TARGET_OS == "windows" then
 		_libpat = "<LIBNAME>.dll"
+	elseif _TARGET_OS == "macos" then
+		_libpat = "lib<LIBNAME>.dylib"
 	else
-		_libpat = "lib<LIBNAME>.*"
+		_libpat = "lib<LIBNAME>.so"
 	end
 	_postbuildcmds = {}
+	i = 0
 	table.foreachi(_libs, function(_lib)
 		_libname = string.gsub(_libpat, "<LIBNAME>", _lib)
 		_cmd = "{COPYFILE} " .. _MAIN_SCRIPT_DIR .. "/deps/lib/%{cfg.platform}/" .. _libname .. " %{cfg.linktarget.directory}/" .. _libname
-		_postbuildcmds = table.merge(_postbuildcmds, { _cmd })
+		_postbuildcmds = table.flatten({ _postbuildcmds, { _cmd } })
+		i = i + 1
 	end)
+	postbuildmessage("Copying " .. i .. " libraries for target %{cfg.linktarget.name}")
 	postbuildcommands(_postbuildcmds)
 end
 
