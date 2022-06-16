@@ -27,33 +27,35 @@ pkg_file_t *pkg_parse(const char *path)
 
 	file = calloc(1, sizeof(pkg_file_t));
 	FTL_ASSERT(file);
-	file->path = ftl_normalize_path(path);
+	file->path = util_normalize_path(path);
 
 	FTL_LOG("Reading package file %s\n", file->path);
 
 	file->fp = fopen(file->path, "rb+");
 	FTL_ASSERT(file->fp);
 
-	FTL_LOG("Reading header\n");
+	FTL_LOG("\tReading header\n");
 	fread(&file->header, sizeof(pkg_header_t), 1, file->fp);
 	PKG_HEADER_TO_NATIVE(file->header);
-	FTL_LOG("Header size %u, entry size %u, %u entries\n", file->header.header_size, file->header.entry_size,
+	FTL_LOG("\tHeader size %u, entry size %u, %u entries\n", file->header.header_size, file->header.entry_size,
 		file->header.entry_count);
 	FTL_ASSERT(memcmp(file->header.magic, PKG_MAGIC, 4) == 0);
 	FTL_ASSERT(file->header.header_size == sizeof(pkg_header_t));
 	FTL_ASSERT(file->header.entry_size == sizeof(pkg_entry_t));
 
-	FTL_LOG("Reading index (%u entries)\n", file->header.entry_count);
+	FTL_LOG("\tReading index (%u entries)\n", file->header.entry_count);
 	file->entries = calloc(file->header.entry_count, sizeof(pkg_entry_t));
 	FTL_ASSERT(file->entries);
 	fread(file->entries, sizeof(pkg_entry_t), file->header.entry_count, file->fp);
 	for (i = 0; i < file->header.entry_count; i++)
 		PKG_ENTRY_TO_NATIVE(file->entries[i]);
 
-	FTL_LOG("Reading path buffer (%u bytes)\n", file->header.path_size);
+	FTL_LOG("\tReading path buffer (%u bytes)\n", file->header.path_size);
 	file->path_buf = calloc(file->header.path_size, 1);
 	FTL_ASSERT(file->path_buf);
 	fread(file->path_buf, 1, file->header.path_size, file->fp);
+
+	FTL_LOG("Done reading package %s\n", file->path);
 
 	return file;
 }

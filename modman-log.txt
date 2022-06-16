@@ -1,5 +1,0 @@
-16:07:54.745 [main] DEBUG net.vhati.modmanager.FTLModManager - Started: Wed Jun 15 16:07:54 EDT 2022
-16:07:54.750 [main] DEBUG net.vhati.modmanager.FTLModManager - Slipstream Mod Manager v1.9.1
-16:07:54.750 [main] DEBUG net.vhati.modmanager.FTLModManager - OS: Windows 11 10.0
-16:07:54.750 [main] DEBUG net.vhati.modmanager.FTLModManager - VM: OpenJDK 64-Bit Server VM, 17.0.3, amd64
-16:07:54.862 [AWT-EventQueue-0] ERROR net.vhati.modmanager.FTLModManager - Slipstream could not find its own folder (Currently in "E:\ftl_clone"), exiting...

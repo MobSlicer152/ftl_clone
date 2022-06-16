@@ -6,7 +6,7 @@
 
 #include "util.h"
 
-size_t ftl_fsize(FILE *stream)
+size_t util_fsize(FILE *stream)
 {
 	long offs;
 	size_t len = 0;
@@ -22,7 +22,7 @@ size_t ftl_fsize(FILE *stream)
 	return len;
 }
 
-char *ftl_normalize_path(const char *path)
+char *util_normalize_path(const char *path)
 {
 	char *buf;
 	char *p;
@@ -30,7 +30,7 @@ char *ftl_normalize_path(const char *path)
 	if (!path)
 		return NULL;
 
-	buf = ftl_strdup(path);
+	buf = util_strdup(path);
 	p = strchr(buf, '\\');
 	while (p) {
 		*p = '/';
@@ -40,12 +40,12 @@ char *ftl_normalize_path(const char *path)
 	return buf;
 }
 
-char *ftl_strdup(const char *str)
+char *util_strdup(const char *str)
 {
-	return ftl_strndup(str, strlen(str) + 1);
+	return util_strndup(str, strlen(str) + 1);
 }
 
-char *ftl_strndup(const char *str, size_t n)
+char *util_strndup(const char *str, size_t n)
 {
 	char *buf = NULL;
 
@@ -56,19 +56,19 @@ char *ftl_strndup(const char *str, size_t n)
 	return buf;
 }
 
-char *ftl_strfmt(size_t *size, const char *fmt, ...)
+char *util_strfmt(size_t *size, const char *fmt, ...)
 {
 	va_list args;
 	char *buf;
 
 	va_start(args, fmt);
-	buf = ftl_vstrfmt(size, fmt, args);
+	buf = util_vstrfmt(size, fmt, args);
 	va_end(args);
 
 	return buf;
 }
 
-char *ftl_vstrfmt(size_t *size, const char *fmt, va_list args)
+char *util_vstrfmt(size_t *size, const char *fmt, va_list args)
 {
 	va_list args2;
 	char *buf = NULL;

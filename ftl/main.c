@@ -2,13 +2,15 @@
 
 #include "ftl.h"
 #include "pack.h"
+#include "settings.h"
 #include "util.h"
 
 int32_t main(int32_t argc, char *argv[])
 {
 	char *ftl_dir;
+	settings_t *settings;
 	SDL_Window *wnd;
-	char *ftl_dat_path;
+	char *path;
 	pkg_file_t *ftl_dat;
 
 	if (argc < 2) {
@@ -16,16 +18,18 @@ int32_t main(int32_t argc, char *argv[])
 		return 1;
 	}
 
-	ftl_dir = ftl_strfmt(NULL, "%s", argv[1]);
+	ftl_dir = util_strfmt(NULL, "%s", argv[1]);
 
 	FTL_LOG("Initializing SDL\n");
 	FTL_ASSERT(SDL_Init(SDL_INIT_AUDIO | SDL_INIT_EVENTS | SDL_INIT_VIDEO) == 0);
 
+	path = util_strfmt(NULL, "%s/settings.ini", ftl_dir);
+	settings = settings_init(path);
+	stbds_arrfree(path);
 
-
-	ftl_dat_path = ftl_strfmt(NULL, "%s/ftl.dat", ftl_dir);
-	ftl_dat = pkg_parse(ftl_dat_path);
-	stbds_arrfree(ftl_dat_path);
+	path = util_strfmt(NULL, "%s/ftl.dat", ftl_dir);
+	ftl_dat = pkg_parse(path);
+	stbds_arrfree(path);
 
 	pkg_close(ftl_dat);
 	stbds_arrfree(ftl_dir);

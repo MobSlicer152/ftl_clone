@@ -11,7 +11,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "ini.h"
 #include "SDL2/SDL.h"
 #undef main
 
