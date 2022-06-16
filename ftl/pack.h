@@ -3,6 +3,7 @@
 #pragma once
 
 #include "ftl.h"
+#include "util.h"
 
 // FTL currently uses the System Interface Library PKG format for ftl.dat, and I'm too lazy to get that working with my
 // build system, so I'm just going to reimplement specifically the stuff I need. It also seems that the format uses big
@@ -37,7 +38,7 @@ typedef struct pkg_entry {
 
 // Package file
 typedef struct pkg_file {
-	const char *path; // Path to the file
+	char *path; // Path to the file
 	FILE *fp; // File stream
 	pkg_header_t header; // File header
 	pkg_entry_t *entries; // Entries in the file

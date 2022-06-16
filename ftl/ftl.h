@@ -11,10 +11,12 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "ini.h"
 #include "SDL2/SDL.h"
 #undef main
 
 #include "stb_ds.h"
+#include "stb_sprintf.h"
 
 // Byte
 typedef uint8_t byte_t;

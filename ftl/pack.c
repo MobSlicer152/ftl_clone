@@ -25,11 +25,11 @@ pkg_file_t *pkg_parse(const char *path)
 	pkg_file_t *file;
 	uint32_t i;
 
-	FTL_LOG("Reading package file %s\n", path);
-
 	file = calloc(1, sizeof(pkg_file_t));
 	FTL_ASSERT(file);
-	file->path = path;
+	file->path = ftl_normalize_path(path);
+
+	FTL_LOG("Reading package file %s\n", file->path);
 
 	file->fp = fopen(file->path, "rb+");
 	FTL_ASSERT(file->fp);
@@ -68,6 +68,7 @@ void pkg_close(pkg_file_t *file)
 	free(file->entries);
 	free(file->path_buf);
 	fclose(file->fp);
+	stbds_arrfree(file->path);
 }
 
 uint8_t *pkg_read(pkg_file_t *file, pkg_entry_t *entry)
@@ -81,9 +82,9 @@ uint8_t *pkg_read(pkg_file_t *file, pkg_entry_t *entry)
 		entry->flags & 1 ? " compressed" : "", entry->offset, file->path);
 
 	fseek(file->fp, entry->offset, SEEK_SET);
-	buf = calloc(entry->data_size + 1, 1);
+	buf = calloc(entry->size + 1, 1);
 	FTL_ASSERT(buf);
-	fread(buf, 1, entry->data_size, file->fp);
+	fread(buf, 1, entry->size, file->fp);
 
 	return buf;
 }

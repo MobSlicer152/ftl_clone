@@ -6,15 +6,18 @@ project "ftl"
 		"premake5.lua",
 
 		"ftl.h",
+		"ini.h",
 		"pack.h",
 		"util.h",
 
+		"ini.c",
 		"main.c",
 		"pack.c",
 		"util.c",
 	}
 
 	sharedlibs({
+		"expat",
 		"SDL2",
 		"zlib-ng2",
 	})
