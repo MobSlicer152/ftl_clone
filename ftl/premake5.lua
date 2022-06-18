@@ -9,17 +9,19 @@ project "ftl"
 		"ini.h",
 		"pack.h",
 		"settings.h",
+		"text.h",
 		"util.h",
 
 		"ini.c",
 		"main.c",
 		"pack.c",
 		"settings.c",
+		"text.c",
 		"util.c",
 	}
 
 	sharedlibs({
-		"expat",
+		"libxml2",
 		"SDL2",
 		"zlib-ng2",
 	})

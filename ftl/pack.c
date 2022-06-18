@@ -44,15 +44,13 @@ pkg_file_t *pkg_parse(const char *path)
 	FTL_ASSERT(file->header.entry_size == sizeof(pkg_entry_t));
 
 	FTL_LOG("\tReading index (%u entries)\n", file->header.entry_count);
-	file->entries = calloc(file->header.entry_count, sizeof(pkg_entry_t));
-	FTL_ASSERT(file->entries);
+	stbds_arrsetlen(file->entries, file->header.entry_count);
 	fread(file->entries, sizeof(pkg_entry_t), file->header.entry_count, file->fp);
 	for (i = 0; i < file->header.entry_count; i++)
 		PKG_ENTRY_TO_NATIVE(file->entries[i]);
 
 	FTL_LOG("\tReading path buffer (%u bytes)\n", file->header.path_size);
-	file->path_buf = calloc(file->header.path_size, 1);
-	FTL_ASSERT(file->path_buf);
+	stbds_arrsetlen(file->path_buf, file->header.path_size);
 	fread(file->path_buf, 1, file->header.path_size, file->fp);
 
 	FTL_LOG("Done reading package %s\n", file->path);
@@ -67,25 +65,24 @@ void pkg_close(pkg_file_t *file)
 
 	FTL_LOG("Closing package file %s\n", file->path);
 
-	free(file->entries);
-	free(file->path_buf);
+	stbds_arrfree(file->entries);
+	stbds_arrfree(file->path_buf);
 	fclose(file->fp);
 	stbds_arrfree(file->path);
 }
 
 uint8_t *pkg_read(pkg_file_t *file, pkg_entry_t *entry)
 {
-	uint8_t *buf;
+	uint8_t *buf = NULL;
 
 	if (!file || !entry)
 		return NULL;
 
 	FTL_LOG("Reading file %s (%u bytes%s at offset %u) from package %s\n", pkg_get_entry_name(file, entry), entry->size,
-		entry->flags & 1 ? " compressed" : "", entry->offset, file->path);
+		entry->flags & 1 ? " deflated" : "", entry->offset, file->path);
 
 	fseek(file->fp, entry->offset, SEEK_SET);
-	buf = calloc(entry->size + 1, 1);
-	FTL_ASSERT(buf);
+	stbds_arrsetlen(buf, entry->size);
 	fread(buf, 1, entry->size, file->fp);
 
 	return buf;

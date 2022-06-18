@@ -32,6 +32,7 @@ settings_t *settings_init(const char *path)
 	settings->colorblind = ini_getbool(NULL, "colorblind", false, path2);
 	settings->dlcEnabled = ini_getbool(NULL, "dlcEnabled", true, path2);
 	settings->difficulty = ini_geti(NULL, "difficulty", 1, path2);
+	settings->language = ini_geti(NULL, "language", LANGUAGE_ENGLISH, path2);
 
 #ifdef FTL_DEBUG
 	settings->debug = ini_getbool(NULL, "debug", false, path2);

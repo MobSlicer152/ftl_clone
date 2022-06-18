@@ -11,6 +11,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "libxml/xmlreader.h"
+
 #include "SDL2/SDL.h"
 #undef main
 
@@ -19,6 +21,9 @@
 
 // Byte
 typedef uint8_t byte_t;
+
+// Array size
+#define FTL_ARRSIZE(a) (sizeof(a) / sizeof((a)[0]))
 
 // Function name
 #ifdef _MSC_VER

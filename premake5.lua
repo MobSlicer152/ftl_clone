@@ -45,12 +45,20 @@ workspace "ftl"
 	filter ""
 
 function sharedlibs(_libs)
-	links(_libs)
+	_libs2 = {}
+	table.foreachi(_libs, function(_lib)
+		_lib2 = _lib
+		if _TARGET_OS ~= "windows" then
+			_lib2 = string.gsub(_lib, "lib", "")
+		end
+		_libs2 = table.flatten({ _libs2, { _lib2 } })
+	end)
+	links(_libs2)
 	if _TARGET_OS == "windows" then
 		_libpat = "<LIBNAME>.dll"
 		_postbuildcmds = {}
 		i = 0
-		table.foreachi(_libs, function(_lib)
+		table.foreachi(_libs2, function(_lib)
 			_libname = string.gsub(_libpat, "<LIBNAME>", _lib)
 			_cmd = "{COPYFILE} " .. _MAIN_SCRIPT_DIR .. "/deps/lib/%{cfg.platform}/" .. _libname .. " %{cfg.linktarget.directory}/" .. _libname
 			_postbuildcmds = table.flatten({ _postbuildcmds, { _cmd } })

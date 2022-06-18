@@ -11,9 +11,13 @@ typedef enum fullscreen {
 	FULLSCREEN_DISABLED = 0, // Windowed
 } fullscreen_t;
 
+// Language
+typedef enum language {
+	LANGUAGE_ENGLISH = 0
+} language_t;
+
 // Settings
-typedef struct settings {
-	// Main settings
+typedef struct settings { // Main settings
 	fullscreen_t fullscreen; // Fullscreen type
 	fullscreen_t last_fullscreen; // Last fullscreen type
 	int32_t screen_x; // Something
@@ -33,6 +37,7 @@ typedef struct settings {
 	bool colorblind; // Colourblind mode
 	bool dlcEnabled; // AE enabled
 	int32_t difficulty; // Difficulty
+	language_t language; // Language
 
 	// Manual resolution
 	bool manual; // Whether to use these settings
@@ -40,7 +45,7 @@ typedef struct settings {
 	int32_t manual_screen_y; // Height
 	bool windowed; // Windowed or not
 	bool stretched; // Stretch to specified resolution
-	
+
 	// Keybinds
 
 	// Debug
